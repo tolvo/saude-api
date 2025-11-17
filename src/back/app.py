@@ -1,8 +1,10 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 import psycopg2
 import os
 
 app = Flask(__name__)
+CORS(app)
 
 db_host = os.getenv("DB_HOST", "postgres_db")
 db_name = os.getenv("DB_NAME", "meubanco")
@@ -17,38 +19,43 @@ def get_connection():
         password=db_pass
     )
 
-@app.route("/cidadao", methods=["GET"])
-def listar():
+VALID_TABLES = ["CIDADAO", "ALERGIA"]
+
+@app.route("/<tabela>", methods=["GET"])
+def listar(tabela):
+    tabela = tabela.upper()
+
+    if tabela not in VALID_TABLES:
+        return jsonify({"erro": "Tabela inválida"}), 404
+
     con = get_connection()
     cur = con.cursor()
-    cur.execute("SELECT * FROM cidadao")
+    cur.execute(f"SELECT * FROM {tabela}")
     result = cur.fetchall()
     cur.close()
     con.close()
+
     return jsonify(result)
 
-@app.route("/cidadao", methods=["POST"])
-def inserir():
+
+@app.route("/<tabela>", methods=["POST"])
+def inserir(tabela):
     data = request.json
-
-
-
-    print(data)
-    CPF = data["CPF"]
-    Nome = data["Nome"]
-    Data_nasc = data["Data_nasc"]
-    Sexo = data["Sexo"]
-    Endereco = data["Endereco"]
-    Telefone = data["Telefone"]
-    Tipo_sanguineo = data["Tipo_sanguineo"]
+    campos = ', '.join(data.keys())
+    valores = ', '.join(['%s'] * len(data))
 
     con = get_connection()
     cur = con.cursor()
-    cur.execute("INSERT INTO cidadao (CPF, Nome, Data_nasc, Sexo, Endereco, Telefone, Tipo_sanguineo) VALUES (%s, %s, %s, %s, %s, %s, %s);", (CPF, Nome, Data_nasc, Sexo, Endereco, Telefone, Tipo_sanguineo))
+    cur.execute(
+        f"INSERT INTO {tabela.upper()} ({campos}) VALUES ({valores})",
+        list(data.values())
+    )
     con.commit()
     cur.close()
     con.close()
-    return {"status": "Inserido"}, 201
+
+    return jsonify({"mensagem": "Inserido!"})
+
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)

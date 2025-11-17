@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Inserir em {{ tabela }}</title>
+</head>
+<body>
+    <h1>Inserir na tabela: {{ tabela }}</h1>
+
+    <form id="insertForm">
+        <div id="fields"></div>
+        <button type="submit">Inserir</button>
+    </form>
+
+    <script src="/static/api.js"></script>
+    <script>
+        loadForm("{{ tabela }}");
+    </script>
+</body>
+</html>
