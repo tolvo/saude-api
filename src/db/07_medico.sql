@@ -1,0 +1,12 @@
+CREATE TABLE IF NOT EXISTS MEDICO(
+    cpf VARCHAR(11),
+    crm INTEGER,
+    especialidade VARCHAR(20),
+    CONSTRAINT PK_MEDICO PRIMARY KEY (cpf),
+    CONSTRAINT FK_MEDICO FOREIGN KEY (cpf)
+                REFERENCES PROFISSIONAL(cpf)
+                ON DELETE CASCADE,
+    UNIQUE(crm)
+
+);
+

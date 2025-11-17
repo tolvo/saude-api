@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS CIDADAO (
-    cpf VARCHAR(20),
+    cpf VARCHAR(11),
     nome VARCHAR(100),
     data_nasc DATE,
     sexo VARCHAR(5),
