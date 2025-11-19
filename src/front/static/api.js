@@ -2,7 +2,24 @@ const BACKEND_URL = "http://localhost:5000";
 
 const schemas = {
     CIDADAO: ["cpf", "nome", "data_nasc", "sexo", "endereco", "telefone", "tipo_sanguineo"],
-    ALERGIA: ["cpf", "alergia"]
+    ALERGIA: ["cpf", "alergia"],
+    UNIDADE_SAUDE: ["cnes", "nome", "endereco", "tipo", "horario_funcinamento"],
+    VACINA: ["cod", "lote", "nome_popular", "fabricante", "validade"],
+    PROFISSIONAL: ["cpf", "nome", "tipo"],
+    ENFERMEIRO: ["cpf", "coren"],
+    MEDICO: ["cpf", "crm", "especialidade"],
+    UNIDADE_BASICA_SAUDE: ["cnes"],
+    HOSPITAL: ["cnes", "capacidade"],
+    INTERNACAO: ["data_entrada", "cidadao", "cnes", "data_alta", "motivo", "ala_hospitalar"],
+    CIRURGIA: ["data_realizacao", "cidadao", "cnes", "duracao", "observacao", "cuidados_posteriores", "nome_procedimento"],
+    CONSULTA: ["data", "cidadao", "medico", "unidade_saude", "relatorio"],
+    VACINACAO: ["dose", "cidadao", "vacina_cod", "vacina_lote", "ubs", "data", "enfermeiro"],
+    EXAME: ["tipo", "data", "cidadao", "medico", "data_realiza", "local", "link"],
+    RECEITA: ["medicamento", "data", "cidadao", "medico", "duracao", "dosagem"],
+    PROFISSIONAL_ATUA_US: ["profissional", "unidade_saude"],
+    MEDICO_CIRURGIA: ["data_realiza", "cidadao", "cnes", "medico"],
+    ENFERMEIRO_CIRURGIA: ["data_realiza", "cidadao", "cnes", "enfermeiro"],
+    PROFISSIONAL_INTERNACAO: ["data_internacao, cidadao, cnes, data_visita, horario_visita, profissional_saude, procedimento_realizado, situacao_paciente"]
 };
 
 // Carrega o formulário baseado no schema

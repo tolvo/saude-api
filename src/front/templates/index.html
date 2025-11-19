@@ -7,15 +7,14 @@
     <h1>Menu Principal</h1>
 
     <h2>Tabelas</h2>
-    <ul>
- 
-        <!-- Quando criar uma nova tabela, DUPLIQUE as linhas abaixo -->
-        <li><a href="/form/CIDADAO">Inserir Cidadão</a></li>
-        <li><a href="/list/CIDADAO">Listar Cidadão</a></li>
+    <ul id="menu-tabelas"></ul>
 
-        <li><a href="/form/ALERGIA">Inserir alergia</a></li>
-        <li><a href="/list/ALERGIA">Listar alergia</a></li>
+    <!-- Importa o JS que contém as tabelas e o renderizador -->
+    <script type="module">
+        import { renderMenu } from "/static/menu.js";
+        renderMenu();
+    </script>
 
-    </ul>
+
 </body>
 </html>
