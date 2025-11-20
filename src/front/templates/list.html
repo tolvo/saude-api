@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lista de {{ tabela }}</title>
+</head>
+<body>
+    <h1>Listagem: {{ tabela }}</h1>
+
+    <table border="1" id="dataTable"></table>
+
+    <script src="/static/api.js"></script>
+    <script>
+        loadTable("{{ tabela }}");
+    </script>
+</body>
+</html>

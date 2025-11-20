@@ -1,0 +1,9 @@
+CREATE TABLE IF NOT EXISTS PROFISSIONAL(
+    cpf VARCHAR(11),
+    nome VARCHAR(30),
+    tipo VARCHAR(10),
+    CONSTRAINT PK_PROFISSIONAL PRIMARY KEY(cpf),
+    CONSTRAINT TIPO_PROFISSIONAL CHECK (lower(tipo) IN ('enfermeiro', 'medico'))
+
+);
+

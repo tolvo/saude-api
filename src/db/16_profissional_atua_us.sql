@@ -1,0 +1,11 @@
+CREATE TABLE IF NOT EXISTS PROFISSIONAL_ATUA(
+    profissional VARCHAR(11),
+    unidade_saude VARCHAR(10),
+    CONSTRAINT PK_PROFISSIONAL_ATUA PRIMARY KEY(profissional, unidade_saude),
+    CONSTRAINT FK_PROFISSIONAL_ATUA_1 FOREIGN KEY(profissional)
+                REFERENCES PROFISSIONAL(cpf)
+                ON DELETE CASCADE,
+    CONSTRAINT FK_PROFISSIONAL_ATUA_2 FOREIGN KEY(unidade_saude)
+                REFERENCES UNIDADE_SAUDE(cnes)
+                ON DELETE CASCADE
+);
