@@ -45,28 +45,30 @@ def listar(tabela):
 
     return jsonify(result)
 
-
 @app.route("/<tabela>", methods=["POST"])
 def inserir(tabela):
-    tabela = tabela.upper()
-    if tabela not in VALID_TABLES:
-        return jsonify({"erro": "Tabela inválida"}), 404
-    
-    data = request.json
-    campos = ', '.join(data.keys())
-    valores = ', '.join(['%s'] * len(data))
+    try:    
+        tabela = tabela.upper()
+        if tabela not in VALID_TABLES:
+            return jsonify({"erro": "Tabela inválida"}), 404
+        
+        data = request.json
+        campos = ', '.join(data.keys())
+        valores = ', '.join(['%s'] * len(data))
 
-    con = get_connection()
-    cur = con.cursor()
-    cur.execute(
-        f"INSERT INTO {tabela.upper()} ({campos}) VALUES ({valores})",
-        list(data.values())
-    )
-    con.commit()
-    cur.close()
-    con.close()
+        con = get_connection()
+        cur = con.cursor()
+        cur.execute(
+            f"INSERT INTO {tabela.upper()} ({campos}) VALUES ({valores})",
+            list(data.values())
+        )
+        con.commit()
+        cur.close()
+        con.close()
 
-    return jsonify({"mensagem": "Inserido!"})
+        return jsonify({"mensagem": "Inserido!"})
+    except Exception as e:
+        return jsonify({"erro": str(e)}), 500
 
 
 if __name__ == "__main__":
