@@ -48,6 +48,10 @@ def listar(tabela):
 
 @app.route("/<tabela>", methods=["POST"])
 def inserir(tabela):
+    tabela = tabela.upper()
+    if tabela not in VALID_TABLES:
+        return jsonify({"erro": "Tabela inválida"}), 404
+    
     data = request.json
     campos = ', '.join(data.keys())
     valores = ', '.join(['%s'] * len(data))
