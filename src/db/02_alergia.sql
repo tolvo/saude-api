@@ -7,6 +7,10 @@ CREATE TABLE IF NOT EXISTS ALERGIA(
                 ON DELETE CASCADE
 );
 
-
-INSERT INTO ALERGIA (cpf, alergia) VALUES ('1', 'TESTE1');
-INSERT INTO ALERGIA (cpf, alergia) VALUES ('1', 'TESTE2');
+-- Dados de exemplo
+INSERT INTO ALERGIA (cpf, alergia) VALUES 
+('12345678901', 'Penicilina'),
+('12345678901', 'Dipirona'),
+('23456789012', 'Lactose'),
+('34567890123', 'Poeira'),
+('45678901234', 'Ácaro');

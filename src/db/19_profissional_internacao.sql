@@ -18,3 +18,10 @@ CREATE TABLE IF NOT EXISTS PROFISSIONAL_INTERNACAO(
 
 
 );
+
+-- Dados de exemplo
+INSERT INTO PROFISSIONAL_INTERNACAO (data_internacao, cidadao, cnes, data_visita, horario, visita, profissional, procedimento_realizado, situacao_paciente) VALUES 
+('2024-01-15', '12345678901', '3000001', '2024-01-16', '10:00', 'Rotina', '11111111111', 'Avaliação cardiológica', 'Estável'),
+('2024-01-15', '12345678901', '3000001', '2024-01-17', '14:00', 'Rotina', '44444444444', 'Troca de curativos', 'Recuperando'),
+('2024-02-10', '23456789012', '3000002', '2024-02-11', '09:00', 'Emergência', '22222222222', 'Medicação endovenosa', 'Grave'),
+('2024-03-05', '34567890123', '3000001', '2024-03-06', '11:00', 'Rotina', '33333333333', 'Avaliação pós-operatória', 'Estável');

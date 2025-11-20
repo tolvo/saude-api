@@ -7,3 +7,8 @@ CREATE TABLE IF NOT EXISTS HOSPITAL (
                 ON DELETE CASCADE
 );
 
+-- Dados de exemplo
+INSERT INTO HOSPITAL (cnes, capacidade) VALUES 
+('3000001', 500),
+('3000002', 1200),
+('3000003', 350);

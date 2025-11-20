@@ -4,11 +4,16 @@ CREATE TABLE IF NOT EXISTS CIDADAO (
     data_nasc DATE,
     sexo VARCHAR(5),
     endereco VARCHAR(100),
-    telefone INTEGER,
+    telefone VARCHAR(15),
     tipo_sanguineo VARCHAR(5),
     CONSTRAINT PK_CIDADAO PRIMARY KEY(cpf)
 );
 
 
-INSERT INTO CIDADAO (cpf, nome, data_nasc, sexo, endereco, telefone, tipo_sanguineo) VALUES ('1', 'Teste', '01/01/2003', 'M', 'Rua teste, 1112, Teste/TESTE', 1111111111,'A+');
-INSERT INTO CIDADAO (cpf, nome, data_nasc, sexo, endereco, telefone, tipo_sanguineo) VALUES ('2', 'Teste2', '01/01/2004', 'M', 'Rua teste2, 1112, Teste/TESTE', 1111111111,'A+');
+-- Dados de exemplo
+INSERT INTO CIDADAO (cpf, nome, data_nasc, sexo, endereco, telefone, tipo_sanguineo) VALUES 
+('12345678901', 'João Silva Santos', '1985-03-15', 'M', 'Rua das Flores, 123, São Paulo/SP', '11987654321', 'A+'),
+('23456789012', 'Maria Oliveira Costa', '1990-07-22', 'F', 'Av. Paulista, 1000, São Paulo/SP', '11976543210', 'O-'),
+('34567890123', 'Pedro Souza Lima', '1978-11-30', 'M', 'Rua Augusta, 456, São Paulo/SP', '11965432109', 'B+'),
+('45678901234', 'Ana Paula Santos', '1995-01-08', 'F', 'Rua Consolação, 789, São Paulo/SP', '11954321098', 'AB+'),
+('56789012345', 'Carlos Eduardo Alves', '1982-09-12', 'M', 'Av. Rebouças, 321, São Paulo/SP', '11943210987', 'O+');

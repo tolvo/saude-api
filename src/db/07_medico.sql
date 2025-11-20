@@ -10,3 +10,8 @@ CREATE TABLE IF NOT EXISTS MEDICO(
 
 );
 
+-- Dados de exemplo
+INSERT INTO MEDICO (cpf, crm, especialidade) VALUES 
+('11111111111', 123456, 'Cardiologia'),
+('22222222222', 234567, 'Pediatria'),
+('33333333333', 345678, 'Ortopedia');

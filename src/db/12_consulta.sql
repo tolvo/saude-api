@@ -17,4 +17,11 @@ CREATE TABLE CONSULTA(
 
 );
 
+-- Dados de exemplo
+INSERT INTO CONSULTA (data, cidadao, medico, unidade_saude, relatorio) VALUES 
+('2024-05-10', '12345678901', '11111111111', '2000001', 'Consulta de rotina'),
+('2024-05-15', '23456789012', '22222222222', '2000002', 'Exame pediátrico'),
+('2024-05-20', '34567890123', '33333333333', '3000001', 'Avaliação ortopédica'),
+('2024-06-01', '45678901234', '11111111111', '3000002', 'Pré-natal'),
+('2024-06-10', '56789012345', '22222222222', '2000001', 'Consulta geral');
 
