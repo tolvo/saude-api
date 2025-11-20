@@ -43,6 +43,24 @@ html = """
 </ul>
 """
 
+html_historico = """
+<h1>Histórico Clínico</h1>
+
+<form method="GET" action="/historico">
+  CPF: <input name="cpf" required><br><br>
+  <button type="submit">Consultar</button>
+</form>
+
+{% if historico %}
+<h2>Histórico de {{cpf}}</h2>
+<ul>
+{% for h in historico %}
+    <li>Data Consulta: {{h[1]}}, Relatório: {{h[2]}}, Exame: {{h[3]}}, Medicamento: {{h[5]}}, Vacina: {{h[6]}}, Cirurgia: {{h[7]}}, Internação: {{h[8]}}</li>
+{% endfor %}
+</ul>
+{% endif %}
+"""
+
 @app.route("/", methods=["GET","POST"])
 def home():
     if request.method == "POST":
@@ -58,8 +76,17 @@ def home():
     cidadao = requests.get(f"{BACKEND_URL}/cidadao").json()
     return render_template_string(html, cidadao=cidadao)
 
+@app.route("/historico", methods=["GET"])
+def historico():
+    cpf = request.args.get("cpf")
+    historico_data = []
+    if cpf:
+        response = requests.get(f"{BACKEND_URL}/historico/{cpf}")
+        if response.status_code == 200:
+            historico_data = response.json()
+    return render_template_string(html_historico, historico=historico_data, cpf=cpf)
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8080)
 
 
-  

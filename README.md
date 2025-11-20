@@ -1,0 +1,42 @@
+# Prontuário Eletrônico do Cidadão (PEC)
+
+Sistema de banco de dados para gestão de dados urbanos em cidades inteligentes, focado na saúde.
+
+## Estrutura do Projeto
+
+- `esquema.sql`: Script para criação das tabelas do banco de dados.
+- `dados.sql`: Script para inserção de dados iniciais.
+- `consultas.sql`: Consultas SQL complexas implementadas.
+- `src/back/`: Back-end em Flask (Python) com API REST.
+- `src/front/`: Front-end simples em Flask com HTML.
+- `src/db/`: Configuração do PostgreSQL via Docker.
+
+## Como Executar
+
+1. Construir e executar os containers:
+   ```bash
+   docker-compose up --build
+   ```
+
+2. O back-end estará em http://localhost:5000
+3. O front-end estará em http://localhost:8080
+
+## Funcionalidades
+
+### Cadastro
+- Cidadão
+- Profissional de Saúde (Médico/Enfermeiro)
+- Unidade de Saúde (Hospital/Unidade Básica)
+- Consulta
+
+### Consulta
+- Histórico Clínico Completo de um Cidadão
+
+## Tecnologias
+- PostgreSQL
+- Python Flask
+- Docker
+
+## Segurança
+- Uso de prepared statements para evitar SQL Injection.
+- Transações para consistência de dados.
