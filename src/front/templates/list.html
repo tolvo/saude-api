@@ -1,16 +1,21 @@
 <!DOCTYPE html>
 <html>
-<head>
+  <head>
     <title>Lista de {{ tabela }}</title>
-</head>
-<body>
+  </head>
+  <body>
     <h1>Listagem: {{ tabela }}</h1>
+
+    <button onclick="window.location.href='/form/{{ tabela }}'">
+      Inserir Novo
+    </button>
+    <button onclick="window.location.href='/'">Voltar</button>
 
     <table border="1" id="dataTable"></table>
 
     <script src="/static/api.js"></script>
     <script>
-        loadTable("{{ tabela }}");
+      loadTable("{{ tabela }}");
     </script>
-</body>
+  </body>
 </html>

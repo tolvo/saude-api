@@ -1,19 +1,21 @@
 <!DOCTYPE html>
 <html>
-<head>
+  <head>
     <title>Inserir em {{ tabela }}</title>
-</head>
-<body>
+  </head>
+  <body>
     <h1>Inserir na tabela: {{ tabela }}</h1>
 
     <form id="insertForm">
-        <div id="fields"></div>
-        <button type="submit">Inserir</button>
+      <div id="fields"></div>
+      <button type="submit">Inserir</button>
     </form>
+
+    <button onclick="window.location.href='/'">Voltar</button>
 
     <script src="/static/api.js"></script>
     <script>
-        loadForm("{{ tabela }}");
+      loadForm("{{ tabela }}");
     </script>
-</body>
+  </body>
 </html>
