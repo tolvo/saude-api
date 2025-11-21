@@ -1,17 +1,28 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
   <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Lista de {{ tabela }}</title>
+    <link rel="stylesheet" href="/static/style.css" />
   </head>
   <body>
-    <h1>Listagem: {{ tabela }}</h1>
+    <div class="container">
+      <h1>📋 Listagem de Dados</h1>
+      <h2>Tabela: {{ tabela }}</h2>
 
-    <button onclick="window.location.href='/form/{{ tabela }}'">
-      Inserir Novo
-    </button>
-    <button onclick="window.location.href='/'">Voltar</button>
+      <div class="nav-buttons">
+        <button onclick="window.location.href='/form/{{ tabela }}'">
+          ➕ Inserir Novo
+        </button>
+        <button class="btn-secondary" onclick="window.location.href='/'">
+          ↩️ Voltar ao Menu
+        </button>
+      </div>
 
-    <table border="1" id="dataTable"></table>
+      <div class="loading" id="loading">Carregando dados...</div>
+      <table id="dataTable" style="display: none"></table>
+    </div>
 
     <script src="/static/api.js"></script>
     <script>

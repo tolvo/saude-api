@@ -1,17 +1,39 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
   <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Inserir em {{ tabela }}</title>
+    <link rel="stylesheet" href="/static/style.css" />
   </head>
   <body>
-    <h1>Inserir na tabela: {{ tabela }}</h1>
+    <div class="container">
+      <h1>➕ Inserir Registro</h1>
+      <h2>Tabela: {{ tabela }}</h2>
 
-    <form id="insertForm">
-      <div id="fields"></div>
-      <button type="submit">Inserir</button>
-    </form>
+      <div id="message"></div>
 
-    <button onclick="window.location.href='/'">Voltar</button>
+      <form id="insertForm">
+        <div id="fields"></div>
+        <div class="nav-buttons">
+          <button type="submit">💾 Salvar</button>
+          <button
+            type="button"
+            class="btn-secondary"
+            onclick="window.location.href='/'"
+          >
+            ↩️ Voltar
+          </button>
+          <button
+            type="button"
+            class="btn-secondary"
+            onclick="window.location.href='/list/{{ tabela }}'"
+          >
+            📋 Ver Lista
+          </button>
+        </div>
+      </form>
+    </div>
 
     <script src="/static/api.js"></script>
     <script>

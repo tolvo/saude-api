@@ -14,6 +14,7 @@ Sistema de banco de dados para gestão de dados urbanos em cidades inteligentes,
 ## Como Executar
 
 1. Construir e executar os containers:
+
    ```bash
    docker-compose up --build
    ```
@@ -23,20 +24,30 @@ Sistema de banco de dados para gestão de dados urbanos em cidades inteligentes,
 
 ## Funcionalidades
 
-### Cadastro
-- Cidadão
+### Cadastro (CRUD)
+
+- Cidadão e Alergias
 - Profissional de Saúde (Médico/Enfermeiro)
 - Unidade de Saúde (Hospital/Unidade Básica)
-- Consulta
+- Consulta, Exames e Receitas
+- Internação e Cirurgia
+- Vacinação e Vacinas
 
-### Consulta
-- Histórico Clínico Completo de um Cidadão
+### Consultas Complexas
+
+- **Histórico Clínico Completo** de um Cidadão (com consultas, exames, receitas, vacinações, cirurgias e internações)
+- **Vacinas em Atraso** por faixa etária
+- **Consultas por Unidade de Saúde** em um período específico
+- **Pacientes com Prescrição** de determinado medicamento
+- **Cidadãos com Todas as Vacinas** (Divisão Relacional)
 
 ## Tecnologias
+
 - PostgreSQL
 - Python Flask
 - Docker
 
 ## Segurança
+
 - Uso de prepared statements para evitar SQL Injection.
 - Transações para consistência de dados.

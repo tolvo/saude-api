@@ -1,20 +1,27 @@
 <!DOCTYPE html>
-<html>
-<head>
-    <title>Gerenciador do Banco</title>
-</head>
-<body>
-    <h1>Menu Principal</h1>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PEC - Prontuário Eletrônico do Cidadão</title>
+    <link rel="stylesheet" href="/static/style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>🏥 Prontuário Eletrônico do Cidadão</h1>
+      <p class="subtitle">Sistema de Gestão de Dados Urbanos em Saúde</p>
 
-    <h2>Tabelas</h2>
-    <ul id="menu-tabelas"></ul>
+      <div class="nav-buttons">
+        <a href="/consultas" class="btn">📊 Consultas Avançadas</a>
+      </div>
 
-    <!-- Importa o JS que contém as tabelas e o renderizador -->
+      <h2>📋 Gerenciamento de Tabelas</h2>
+      <div id="menu-tabelas" class="menu-grid"></div>
+    </div>
+
     <script type="module">
-        import { renderMenu } from "/static/menu.js";
-        renderMenu();
+      import { renderMenu } from "/static/menu.js";
+      renderMenu();
     </script>
-
-
-</body>
+  </body>
 </html>
