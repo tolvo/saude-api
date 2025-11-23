@@ -10,6 +10,10 @@ def index():
 def consultas():
     return render_template("consultas.html")
 
+@app.route("/buscar-cidadao")
+def buscar_cidadao():
+    return render_template("buscar_cidadao.html")
+
 @app.route("/form/<tabela>")
 def form(tabela):
     return render_template("form.html", tabela=tabela)

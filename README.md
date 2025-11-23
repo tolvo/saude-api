@@ -24,6 +24,20 @@ Sistema de banco de dados para gestão de dados urbanos em cidades inteligentes,
 
 ## Funcionalidades
 
+### Busca de Cidadão 🔍 DESTAQUE
+
+- **Busca Completa por CPF**: Retorna TODAS as informações do cidadão
+  - Dados básicos (nome, CPF, data de nascimento, sexo, tipo sanguíneo, etc.)
+  - Alergias registradas
+  - Histórico de consultas médicas
+  - Exames realizados
+  - Receitas prescritas
+  - Vacinações recebidas
+  - Cirurgias realizadas
+  - Internações (em andamento e concluídas)
+- Interface visual intuitiva com cards organizados
+- Informações formatadas e fáceis de ler
+
 ### Cadastro (CRUD)
 
 - Cidadão e Alergias
@@ -32,6 +46,7 @@ Sistema de banco de dados para gestão de dados urbanos em cidades inteligentes,
 - Consulta, Exames e Receitas
 - Internação e Cirurgia
 - Vacinação e Vacinas
+- Formulários inteligentes com validação (datas, selects, placeholders)
 
 ### Consultas Complexas
 

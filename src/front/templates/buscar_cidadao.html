@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Buscar Cidadão - PEC</title>
+    <link rel="stylesheet" href="/static/style.css" />
+    <style>
+      .info-section {
+        background: white;
+        padding: 20px;
+        margin: 20px 0;
+        border-radius: 10px;
+        border-left: 4px solid #667eea;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .info-section h3 {
+        color: #667eea;
+        margin-bottom: 15px;
+        font-size: 1.2em;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .info-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 15px;
+        margin-top: 15px;
+      }
+
+      .info-item {
+        padding: 10px;
+        background: #f8f9fa;
+        border-radius: 6px;
+      }
+
+      .info-label {
+        font-weight: 600;
+        color: #555;
+        font-size: 0.9em;
+        margin-bottom: 5px;
+      }
+
+      .info-value {
+        color: #333;
+        font-size: 1em;
+      }
+
+      .lista-items {
+        list-style: none;
+        padding: 0;
+      }
+
+      .lista-items li {
+        background: #f8f9fa;
+        padding: 12px;
+        margin: 8px 0;
+        border-radius: 6px;
+        border-left: 3px solid #667eea;
+      }
+
+      .badge {
+        display: inline-block;
+        padding: 4px 12px;
+        background: #667eea;
+        color: white;
+        border-radius: 15px;
+        font-size: 0.85em;
+        margin-right: 8px;
+      }
+
+      .empty-message {
+        color: #999;
+        font-style: italic;
+        padding: 15px;
+        text-align: center;
+      }
+
+      #resultado {
+        display: none;
+      }
+
+      .search-box {
+        background: white;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        max-width: 500px;
+        margin: 20px auto;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>🔍 Buscar Cidadão</h1>
+      <p class="subtitle">
+        Consulte todas as informações de um cidadão por CPF
+      </p>
+
+      <div class="nav-buttons">
+        <button class="btn-secondary" onclick="window.location.href='/'">
+          ↩️ Voltar ao Menu
+        </button>
+      </div>
+
+      <div class="search-box">
+        <form id="form-buscar">
+          <label for="cpf">CPF do Cidadão:</label>
+          <input
+            type="text"
+            id="cpf"
+            name="cpf"
+            placeholder="Digite apenas números (11 dígitos)"
+            pattern="[0-9]{11}"
+            maxlength="11"
+            required
+          />
+          <button type="submit" style="margin-top: 15px; width: 100%">
+            🔍 Buscar
+          </button>
+        </form>
+        <div id="message"></div>
+      </div>
+
+      <div id="resultado">
+        <!-- Dados Básicos -->
+        <div class="info-section">
+          <h3>👤 Dados Básicos</h3>
+          <div class="info-grid" id="dados-basicos"></div>
+        </div>
+
+        <!-- Alergias -->
+        <div class="info-section" id="section-alergias" style="display: none">
+          <h3>⚠️ Alergias</h3>
+          <ul class="lista-items" id="lista-alergias"></ul>
+        </div>
+
+        <!-- Consultas -->
+        <div class="info-section" id="section-consultas" style="display: none">
+          <h3>📋 Consultas Médicas</h3>
+          <ul class="lista-items" id="lista-consultas"></ul>
+        </div>
+
+        <!-- Exames -->
+        <div class="info-section" id="section-exames" style="display: none">
+          <h3>🔬 Exames</h3>
+          <ul class="lista-items" id="lista-exames"></ul>
+        </div>
+
+        <!-- Receitas -->
+        <div class="info-section" id="section-receitas" style="display: none">
+          <h3>💊 Receitas Médicas</h3>
+          <ul class="lista-items" id="lista-receitas"></ul>
+        </div>
+
+        <!-- Vacinações -->
+        <div class="info-section" id="section-vacinacoes" style="display: none">
+          <h3>💉 Histórico de Vacinação</h3>
+          <ul class="lista-items" id="lista-vacinacoes"></ul>
+        </div>
+
+        <!-- Cirurgias -->
+        <div class="info-section" id="section-cirurgias" style="display: none">
+          <h3>⚕️ Cirurgias</h3>
+          <ul class="lista-items" id="lista-cirurgias"></ul>
+        </div>
+
+        <!-- Internações -->
+        <div
+          class="info-section"
+          id="section-internacoes"
+          style="display: none"
+        >
+          <h3>🛏️ Internações</h3>
+          <ul class="lista-items" id="lista-internacoes"></ul>
+        </div>
+      </div>
+    </div>
+
+    <script src="/static/buscar_cidadao.js"></script>
+  </body>
+</html>
