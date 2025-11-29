@@ -3,6 +3,13 @@ Rotas para consultas complexas e relatórios
 """
 from flask import request, jsonify
 from database import get_connection
+from queries.consultas_queries import (
+    get_historico_cidadao_query,
+    get_vacinas_atraso_query,
+    get_consultas_unidade_query,
+    get_pacientes_medicamento_query,
+    get_cidadaos_todas_vacinas_query
+)
 
 def register_consultas_routes(app):
     """Registra as rotas de consultas complexas"""
@@ -14,28 +21,7 @@ def register_consultas_routes(app):
             con = get_connection()
             cur = con.cursor()
             
-            query = """
-            SELECT 
-                c.nome as cidadao,
-                cons.data as data_consulta,
-                cons.relatorio as relatorio_medico,
-                e.tipo as tipo_exame,
-                e.data_realiza as data_exame,
-                r.medicamento,
-                v.nome_popular as vacina,
-                cir.nome_procedimento,
-                i.motivo as motivo_internacao
-            FROM cidadao c
-            LEFT JOIN consulta cons ON c.cpf = cons.cidadao
-            LEFT JOIN exame e ON cons.cidadao = e.cidadao AND cons.medico = e.medico AND cons.data = e.data
-            LEFT JOIN receita r ON cons.cidadao = r.cidadao AND cons.medico = r.medico AND cons.data = r.data
-            LEFT JOIN vacinacao vac ON c.cpf = vac.cidadao
-            LEFT JOIN vacina v ON vac.vacina_lote = v.lote AND vac.vacina_cod = v.cod
-            LEFT JOIN cirurgia cir ON c.cpf = cir.cidadao
-            LEFT JOIN internacao i ON c.cpf = i.cidadao
-            WHERE c.cpf = %s
-            ORDER BY cons.data DESC NULLS LAST
-            """
+            query = get_historico_cidadao_query()
             
             cur.execute(query, (cpf,))
             result = cur.fetchall()
@@ -56,16 +42,7 @@ def register_consultas_routes(app):
             con = get_connection()
             cur = con.cursor()
             
-            query = """
-            SELECT c.cpf, c.nome, c.data_nasc
-            FROM cidadao c
-            WHERE c.data_nasc > %s
-            AND NOT EXISTS (
-                SELECT 1 FROM vacinacao v 
-                WHERE v.cidadao = c.cpf AND v.vacina_cod = %s
-            )
-            ORDER BY c.data_nasc DESC
-            """
+            query = get_vacinas_atraso_query()
             
             cur.execute(query, (ano_limite + '-01-01', cod_vacina))
             result = cur.fetchall()
@@ -86,14 +63,7 @@ def register_consultas_routes(app):
             con = get_connection()
             cur = con.cursor()
             
-            query = """
-            SELECT u.nome as unidade, COUNT(*) as numero_consultas
-            FROM unidade_saude u
-            JOIN consulta cons ON u.cnes = cons.unidade_saude
-            WHERE cons.data BETWEEN %s AND %s
-            GROUP BY u.cnes, u.nome
-            ORDER BY numero_consultas DESC
-            """
+            query = get_consultas_unidade_query()
             
             cur.execute(query, (data_inicio, data_fim))
             result = cur.fetchall()
@@ -111,13 +81,7 @@ def register_consultas_routes(app):
             con = get_connection()
             cur = con.cursor()
             
-            query = """
-            SELECT DISTINCT c.cpf, c.nome, r.medicamento, r.dosagem, r.duracao
-            FROM cidadao c
-            JOIN receita r ON c.cpf = r.cidadao
-            WHERE r.medicamento ILIKE %s
-            ORDER BY c.nome
-            """
+            query = get_pacientes_medicamento_query()
             
             cur.execute(query, (f'%{medicamento}%',))
             result = cur.fetchall()
@@ -135,19 +99,7 @@ def register_consultas_routes(app):
             con = get_connection()
             cur = con.cursor()
             
-            query = """
-            SELECT c.cpf, c.nome
-            FROM cidadao c
-            WHERE NOT EXISTS (
-                SELECT v.lote, v.cod
-                FROM vacina v
-                EXCEPT
-                SELECT vac.vacina_lote, vac.vacina_cod
-                FROM vacinacao vac
-                WHERE vac.cidadao = c.cpf
-            )
-            ORDER BY c.nome
-            """
+            query = get_cidadaos_todas_vacinas_query()
             
             cur.execute(query)
             result = cur.fetchall()

@@ -4,12 +4,42 @@ Sistema de banco de dados para gestão de dados urbanos em cidades inteligentes,
 
 ## Estrutura do Projeto
 
-- `esquema.sql`: Script para criação das tabelas do banco de dados.
-- `dados.sql`: Script para inserção de dados iniciais.
-- `consultas.sql`: Consultas SQL complexas implementadas.
-- `src/back/`: Back-end em Flask (Python) com API REST.
-- `src/front/`: Front-end simples em Flask com HTML.
-- `src/db/`: Configuração do PostgreSQL via Docker.
+- `src/back/`: Código-fonte do back-end em Python Flask.
+- `src/front/`: Código-fonte do front-end em Python Flask.
+- `src/db/`: Scripts SQL para criação e povoamento do banco de dados PostgreSQL.
+- `docker-compose.yml`: Configuração do Docker para orquestração dos containers.
+
+### Esquema do Banco de Dados
+
+O esquema do banco de dados está dividido em arquvos SQL localizados em `src/db/`, tais como:
+
+- `01_cidadao.sql`: Tabela de cidadãos.
+- `02_alergias.sql`: Tabela de alergias.
+- `03_unidade_saude.sql`: Tabela de unidades de saúde.
+
+### Dados Iniciais
+
+Cada arquivo contém a definição da tabela e os dados iniciais para povoamento.
+
+### Consultas SQL
+
+As consultas SQL estão localizadas em `src/back/queries/`, organizadas por funcionalidade, como:
+
+- `cidadao_queries.py`:
+  - obter dados básicos do cidadão
+  - obter alergias
+  - obter consultas
+  - obter exames realizados
+  - obter receitas prescritas
+  - obter vacinações
+  - obter cirurgias realizadas
+  - obter internações
+- `consultas_queries.py`:
+  - histórico clínico completo
+  - vacinas em atraso
+  - consultas por unidade de saúde
+  - pacientes com prescrição
+  - cidadãos com todas as vacinas
 
 ## Como Executar
 
@@ -21,40 +51,6 @@ Sistema de banco de dados para gestão de dados urbanos em cidades inteligentes,
 
 2. O back-end estará em http://localhost:5000
 3. O front-end estará em http://localhost:8080
-
-## Funcionalidades
-
-### Busca de Cidadão 🔍 DESTAQUE
-
-- **Busca Completa por CPF**: Retorna TODAS as informações do cidadão
-  - Dados básicos (nome, CPF, data de nascimento, sexo, tipo sanguíneo, etc.)
-  - Alergias registradas
-  - Histórico de consultas médicas
-  - Exames realizados
-  - Receitas prescritas
-  - Vacinações recebidas
-  - Cirurgias realizadas
-  - Internações (em andamento e concluídas)
-- Interface visual intuitiva com cards organizados
-- Informações formatadas e fáceis de ler
-
-### Cadastro (CRUD)
-
-- Cidadão e Alergias
-- Profissional de Saúde (Médico/Enfermeiro)
-- Unidade de Saúde (Hospital/Unidade Básica)
-- Consulta, Exames e Receitas
-- Internação e Cirurgia
-- Vacinação e Vacinas
-- Formulários inteligentes com validação (datas, selects, placeholders)
-
-### Consultas Complexas
-
-- **Histórico Clínico Completo** de um Cidadão (com consultas, exames, receitas, vacinações, cirurgias e internações)
-- **Vacinas em Atraso** por faixa etária
-- **Consultas por Unidade de Saúde** em um período específico
-- **Pacientes com Prescrição** de determinado medicamento
-- **Cidadãos com Todas as Vacinas** (Divisão Relacional)
 
 ## Tecnologias
 
