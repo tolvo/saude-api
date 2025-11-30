@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Consultas Avançadas - PEC</title>
+    <link rel="stylesheet" href="/static/style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>📊 Consultas Avançadas</h1>
+      <p class="subtitle">Relatórios e análises do sistema de saúde</p>
+
+      <div class="nav-buttons">
+        <button class="btn-secondary" onclick="window.location.href='/'">
+          ↩️ Voltar ao Menu
+        </button>
+      </div>
+
+      <!-- Consulta 1: Histórico do Cidadão -->
+      <div class="menu-item">
+        <h3>👤 Histórico Clínico Completo de um Cidadão</h3>
+        <form id="form-historico">
+          <label>CPF do Cidadão:</label>
+          <input
+            type="text"
+            name="cpf"
+            placeholder="Ex: 12345678901"
+            required
+            maxlength="11"
+          />
+          <button type="submit">🔍 Buscar Histórico</button>
+        </form>
+        <div id="result-historico"></div>
+      </div>
+
+      <!-- Consulta 2: Vacinas em Atraso -->
+      <div class="menu-item">
+        <h3>💉 Cidadãos com Vacinas em Atraso</h3>
+        <form id="form-vacinas">
+          <label>Nascidos após o ano:</label>
+          <input
+            type="number"
+            name="ano"
+            placeholder="Ex: 1994"
+            value="1994"
+            required
+          />
+          <label>Código da Vacina:</label>
+          <input
+            type="text"
+            name="vacina"
+            placeholder="Ex: VAC001"
+            value="VAC001"
+            required
+          />
+          <button type="submit">🔍 Buscar</button>
+        </form>
+        <div id="result-vacinas"></div>
+      </div>
+
+      <!-- Consulta 3: Consultas por Unidade -->
+      <div class="menu-item">
+        <h3>🏥 Consultas por Unidade de Saúde (Período)</h3>
+        <form id="form-unidade">
+          <label>Data Início:</label>
+          <input type="date" name="inicio" value="2023-01-01" required />
+          <label>Data Fim:</label>
+          <input type="date" name="fim" value="2023-12-31" required />
+          <button type="submit">🔍 Buscar</button>
+        </form>
+        <div id="result-unidade"></div>
+      </div>
+
+      <!-- Consulta 4: Pacientes por Medicamento -->
+      <div class="menu-item">
+        <h3>💊 Pacientes com Prescrição de Medicamento</h3>
+        <form id="form-medicamento">
+          <label>Nome do Medicamento:</label>
+          <input
+            type="text"
+            name="medicamento"
+            placeholder="Ex: Aspirina"
+            required
+          />
+          <button type="submit">🔍 Buscar</button>
+        </form>
+        <div id="result-medicamento"></div>
+      </div>
+
+      <!-- Consulta 5: Cidadãos com Todas as Vacinas -->
+      <div class="menu-item">
+        <h3>⭐ Cidadãos com Todas as Vacinas (Divisão Relacional)</h3>
+        <button onclick="buscarTodasVacinas()">🔍 Buscar</button>
+        <div id="result-todas-vacinas"></div>
+      </div>
+    </div>
+
+    <script src="/static/consultas.js"></script>
+  </body>
+</html>

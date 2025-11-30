@@ -1,65 +1,27 @@
-from flask import Flask, render_template_string, request
-import requests
+from flask import Flask, render_template
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder="templates", static_folder="static")
 
-BACKEND_URL = "http://backend:5000"
+@app.route("/")
+def index():
+    return render_template("index.html")
 
-html = """
-<h1>Cadastro de Cidadao</h1>
+@app.route("/consultas")
+def consultas():
+    return render_template("consultas.html")
 
-<form method="POST">
-  CPF: <input name="CPF" required><br><br>
-  Nome: <input name="Nome" required><br><br>
-  Data_nasc: <input name="Data_nasc" required><br><br>
-  Sexo: <input name="Sexo" required><br><br>
-  Endereco: <input name="Endereco" required><br><br>
-  Telefone: <input name="Telefone" required><br><br>
-  Tipo_sanguineo: <input name="Tipo_sanguineo" required><br><br>
+@app.route("/buscar-cidadao")
+def buscar_cidadao():
+    return render_template("buscar_cidadao.html")
 
+@app.route("/form/<tabela>")
+def form(tabela):
+    return render_template("form.html", tabela=tabela)
 
-  <button type="submit">Cadastrar</button>
-</form>
+@app.route("/list/<tabela>")
+def listar(tabela):
+    return render_template("list.html", tabela=tabela)
 
-<h2>Lista</h2>
-<ul>
-{% for p in cidadao %}
-    <li> {{p[0][0]}} </li>
-{% endfor %}
-</ul>
-
-<ul>
-{% for p in cidadao %}
-
-     <li>CPF:{{p[0]}} </li>
-     <li>Nome:{{p[1]}} </li>
-     <li>Data_nasc:{{p[2]}} </li>
-     <li>Sexo:{{p[3]}} </li>
-     <li>Endereco:{{p[4]}} </li>
-     <li>Telefone:{{p[5]}} </li>
-     <li>Tipo_sanguineo:{{p[6]}} </li>
-
-{% endfor %}
-</ul>
-"""
-
-@app.route("/", methods=["GET","POST"])
-def home():
-    if request.method == "POST":
-        requests.post(f"{BACKEND_URL}/cidadao", json={
-            "CPF": request.form["CPF"],
-            "Nome": request.form["Nome"],
-            "Data_nasc": request.form["Data_nasc"],
-            "Sexo": request.form["Sexo"],
-            "Endereco": request.form["Endereco"],
-            "Telefone": request.form["Telefone"],
-            "Tipo_sanguineo": request.form["Tipo_sanguineo"]
-        })
-    cidadao = requests.get(f"{BACKEND_URL}/cidadao").json()
-    return render_template_string(html, cidadao=cidadao)
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8080)
-
-
-  

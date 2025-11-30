@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PEC - Prontuário Eletrônico do Cidadão</title>
+    <link rel="stylesheet" href="/static/style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>🏥 Prontuário Eletrônico do Cidadão</h1>
+      <p class="subtitle">Sistema de Gestão de Dados Urbanos em Saúde</p>
+
+      <div class="nav-buttons">
+        <a href="/buscar-cidadao" class="btn">🔍 Buscar Cidadão</a>
+        <a href="/consultas" class="btn">📊 Consultas Avançadas</a>
+      </div>
+
+      <h2>📋 Gerenciamento de Tabelas</h2>
+      <div id="menu-tabelas" class="menu-grid"></div>
+    </div>
+
+    <script type="module">
+      import { renderMenu } from "/static/menu.js";
+      renderMenu();
+    </script>
+  </body>
+</html>

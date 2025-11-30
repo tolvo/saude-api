@@ -1,0 +1,14 @@
+CREATE TABLE IF NOT EXISTS HOSPITAL (
+    cnes VARCHAR(10),
+    capacidade INTEGER,
+    CONSTRAINT PK_HOSPITAL PRIMARY KEY (cnes),
+    CONSTRAINT FK_HOSPITAL FOREIGN KEY (cnes)
+                REFERENCES UNIDADE_SAUDE(cnes)
+                ON DELETE CASCADE
+);
+
+-- Dados de exemplo
+INSERT INTO HOSPITAL (cnes, capacidade) VALUES 
+('3000001', 500),
+('3000002', 1200),
+('3000003', 350);

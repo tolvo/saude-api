@@ -1,0 +1,25 @@
+CREATE TABLE IF NOT EXISTS MEDICO_CIRURGIA(
+    data_realiza DATE,
+    cidadao VARCHAR(11),
+    cnes VARCHAR(10),
+    medico VARCHAR(11),
+    CONSTRAINT PK_MEDICO_CIRURGIA PRIMARY KEY(data_realiza, cidadao,cnes,medico),
+    CONSTRAINT FK_MEDICO_CIRURGIA_1 FOREIGN KEY(cidadao)
+                REFERENCES CIDADAO(cpf)
+                ON DELETE CASCADE,
+    CONSTRAINT FK_MEDICO_CIRURGIA_2 FOREIGN KEY(cnes)
+                REFERENCES HOSPITAL(cnes)
+                ON DELETE CASCADE,
+
+    CONSTRAINT FK_MEDICO_CIRURGIA_3 FOREIGN KEY(medico)
+                REFERENCES MEDICO(cpf)
+                ON DELETE CASCADE
+
+
+);
+
+-- Dados de exemplo
+INSERT INTO MEDICO_CIRURGIA (data_realiza, cidadao, cnes, medico) VALUES 
+('2024-01-15', '12345678901', '3000001', '11111111111'),
+('2024-03-05', '34567890123', '3000001', '33333333333'),
+('2024-04-20', '45678901234', '3000003', '22222222222');

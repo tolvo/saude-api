@@ -7,5 +7,8 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY app.py .
+COPY database.py .
+COPY routes/ ./routes/
+COPY queries/ ./queries/
 
 CMD ["python", "app.py"]
