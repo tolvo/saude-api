@@ -470,6 +470,23 @@ Abaixo apresentamos o diagrama relacional do banco de dados:
 
 \includepdf[pages={1}, width=\paperwidth, pagecommand={}]{relacional.pdf}
 
+\subsection{Notes}
+\begin{description}
+    \item[Consulta:] Deve estar obrigatoriamente ligada a um Cidadão e um Médico válidos e existentes.
+    
+    \item[Receita:] Deve obrigatoriamente estar ligada a uma Consulta existente.
+    
+    \item[Exame:] Deve obrigatoriamente estar ligado a uma Consulta existente.
+    
+    \item[Vacinação:] Deve estar ligada a um Cidadão, uma Vacina, um Enfermeiro e uma Unidade Básica de Saúde existentes.
+    
+    \item[Cirurgia:] Deve ocorrer em um Hospital e estar ligada a um Cidadão.
+    
+    \item[Internação:] Deve estar ligada a um Cidadão e a um Hospital.
+    
+    \item[Acompanhamento:] Deve estar ligado a uma Internação e a Profissionais de Saúde válidos.
+\end{description}
+
 \section{Justificativas para o Modelo Relacional}
 A seguir estão listadas as justificativas tomadas para a criação do modelo
 relacional utilizando o modelo entidade relacionamento desenvolvido no tópico anterior.
@@ -483,13 +500,13 @@ relacional utilizando o modelo entidade relacionamento desenvolvido no tópico a
         armazenamento do atributo Alergias e com uma consulta temos o retorno de todas as
         alergias que um cidadão possui.
 
-    \item \textbf{Desvantagem:} Aumenta o custo computacional, ao gerar mais uma consulta e mais uma
-        tabela para ser feito dentro do sistema.
+    \item \textbf{Desvantagem:} Aumenta o custo computacional, ao gerar mais uma junção 
+    nas consultas e mais uma tabela para ser feito dentro do sistema
 
-    \item \textbf{Solução alternativa:} O mapeamento de atributos multivalorados também torna possível
-        mapeá-lo na tabela da entidade a qual ele pertence, porém é possível que um cidadão
-        tenha diversas alergias, gerando assim, um armazenamento maior e possíveis
-        incoerências.
+    \item \textbf{Solução alternativa:} O mapeamento de atributos multivalorados também torna possível 
+    mapeá-lo na tabela da entidade a qual ele pertence, porém é possível que um cidadão tenha diversas alergias, 
+    gerando assim, uma necessidade de estipular um tamanho máximo para este atributo que em suma maioria seria 
+    muito pouco utilizado, além da possibilidade de permitir incoerências.
 \end{itemize}
 
 \subsection{Atributo Derivado da entidade Hospital}
@@ -589,9 +606,8 @@ dados já que os atributos das específicas não estão na tabela generalista.
 junções, onde buscar dados de unidade de saúde ou hospital com informações básicas
 seria necessário fazer JOINS.
 
-    \item \textbf{Solução alternativa:} Uma opção seria tratar os atributos de unidade de saúde e
-Enfermeiro como valores de atributo dentro da entidade unidade saúde, sem a
-necessidade de trabalhar com mais duas tabelas para isso.
+    \item \textbf{Solução alternativa:} Uma opção seria tratar os atributos de unidade básica de saúde e
+hospital como valores de atributo dentro da entidade unidade saúde, sem a necessidade de trabalhar com mais duas tabelas para isso.
 
 \end{itemize}
 
