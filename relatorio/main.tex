@@ -618,63 +618,60 @@ hospital como valores de atributo dentro da entidade unidade saúde, sem a neces
 % =========================================================================
 \section{Implementação e Implantação}
 
-\subsection{Tecnologias Utilizadas}
-Para a implementação do sistema PEC, foram utilizadas as seguintes tecnologias:
+Esta seção descreve os detalhes técnicos do desenvolvimento do sistema Prontuário Eletrônico do Cidadão (PEC), incluindo as ferramentas utilizadas, a arquitetura da solução e os principais trechos de código SQL desenvolvidos, conforme solicitado nos requisitos do projeto.
+
+\subsection{Tecnologias e Ferramentas}
+Para atender aos requisitos de portabilidade e robustez, o sistema foi desenvolvido utilizando as seguintes tecnologias:
+
 \begin{itemize}
-    \item \textbf{SGBD:} PostgreSQL. Escolhido devido à sua robustez, suporte a integridade referencial e conformidade com padrões SQL.
-    \item \textbf{Linguagem de Backend:} Python com framework Flask/FastAPI (ajustar conforme uso). Utilizado para criar a API que comunica o banco de dados com a interface.
-    \item \textbf{Interface:} HTML/JS simples para demonstração dos requisitos.
-    \item \textbf{Conexão:} Biblioteca \texttt{psycopg2} para conexão segura e execução de queries parametrizadas.
-    \item \textbf{Ambiente:} Docker, garantindo a portabilidade da aplicação e do banco de dados.
+    \item \textbf{SGBD:} PostgreSQL (Versão 13).
+    \item \textbf{Linguagem Backend:} Python 3.9 com framework Flask.
+    \item \textbf{Driver de Banco de Dados:} Biblioteca \texttt{psycopg2} para conexão e prevenção de injeção de SQL.
+    \item \textbf{Ambiente:} Docker e Docker Compose para orquestração dos containers de banco, backend e frontend.
 \end{itemize}
 
+\subsection{Requisitos de Sistema}
+O sistema foi projetado para rodar sobre a plataforma \textbf{Docker}. Portanto, o único requisito de sistema é um ambiente (Windows, Linux ou macOS) com o \textit{Docker Engine} e \textit{Docker Compose} instalados e configurados.
+
 \subsection{Trechos de Código e Consultas SQL}
-Abaixo estão apresentados os principais trechos de código utilizados, demonstrando a implementação das operações e consultas avançadas definidas no projeto.
+Abaixo são apresentadas as implementações SQL das funcionalidades mais críticas do sistema.
 
-% --- Divisão Relacional ---
-\subsubsection{Consulta com Divisão Relacional}
-\textbf{Contexto:} Esta consulta identifica cidadãos que tomaram \textit{todos} os tipos de vacinas disponíveis no sistema. Utilizamos a lógica de \texttt{NOT EXISTS} aninhado para simular a divisão relacional (álgebra relacional).
+% 1. Divisão Relacional
+\subsubsection{Relatório de Vacinação Completa (Divisão Relacional)}
+\textbf{Descrição:} Identifica cidadãos que receberam \textbf{todos} os tipos de vacinas cadastradas. A lógica utiliza \texttt{NOT EXISTS} com \texttt{EXCEPT} para encontrar cidadãos para os quais não existe nenhuma vacina pendente.
 
-\textbf{Arquivo:} \texttt{src/back/queries/consultas\_queries.py}
+\noindent\textbf{Localização:}
+\begin{itemize}
+    \item \textbf{Arquivo:} \texttt{src/back/queries/consultas\_queries.py}
+    \item \textbf{Função:} \texttt{get\_cidadaos\_todas\_vacinas\_query()}
+\end{itemize}
 
-\begin{lstlisting}[language=SQL, caption=Consulta de Divisão Relacional (Cidadãos com esquema vacinal completo)]
+\begin{lstlisting}[language=SQL, caption=Divisão Relacional: Cidadãos com todas as vacinas]
 SELECT c.cpf, c.nome
 FROM cidadao c
 WHERE NOT EXISTS (
-    -- Seleciona todas as vacinas existentes
-    SELECT v.lote, v.cod
-    FROM vacina v
+    -- Seleciona todas as vacinas disponiveis
+    SELECT v.lote, v.cod FROM vacina v
     EXCEPT
-    -- Remove as vacinas que o cidadão JÁ tomou
+    -- Remove as vacinas que o cidadao ja tomou
     SELECT vac.vacina_lote, vac.vacina_cod
     FROM vacinacao vac
     WHERE vac.cidadao = c.cpf
 )
-ORDER BY c.nome;
+ORDER BY c.nome
 \end{lstlisting}
 
-% --- Consulta Parametrizada ---
-\subsubsection{Busca de Cidadão (Parametrizada)}
-\textbf{Contexto:} Busca os dados básicos de um cidadão pelo CPF. O uso de parâmetros (\texttt{\%s}) é essencial para prevenir ataques de SQL Injection na aplicação Python.
+% 2. Histórico Unificado
+\subsubsection{Prontuário Unificado do Paciente}
+\textbf{Descrição:} Constrói o histórico cronológico de um paciente agregando consultas, exames e receitas. Utiliza múltiplos \texttt{LEFT JOIN} para garantir o retorno de dados parciais (ex: consulta sem receita).
 
-\textbf{Arquivo:} \texttt{src/back/queries/cidadao\_queries.py}
+\noindent\textbf{Localização:}
+\begin{itemize}
+    \item \textbf{Arquivo:} \texttt{src/back/queries/consultas\_queries.py}
+    \item \textbf{Função:} \texttt{get\_historico\_cidadao\_query()}
+\end{itemize}
 
-\begin{lstlisting}[language=Python, caption=Query parametrizada para busca segura]
-def get_cidadao_basic_query():
-    return """
-        SELECT cpf, nome, data_nasc, sexo, endereco, telefone, tipo_sanguineo
-        FROM cidadao
-        WHERE cpf = %s
-    """
-\end{lstlisting}
-
-% --- Consulta Complexa com JOINs ---
-\subsubsection{Consulta de Histórico Completo}
-\textbf{Contexto:} Utiliza múltiplos \texttt{LEFT JOIN} para agregar informações de consultas, exames e receitas em uma única visão cronológica para o prontuário.
-
-\textbf{Arquivo:} \texttt{src/back/queries/consultas\_queries.py}
-
-\begin{lstlisting}[language=SQL, caption=Histórico Médico Unificado]
+\begin{lstlisting}[language=SQL, caption=Histórico Médico com Múltiplas Junções]
 SELECT
     c.nome as cidadao,
     cons.data as data_consulta,
@@ -684,18 +681,102 @@ SELECT
 FROM cidadao c
 LEFT JOIN consulta cons ON c.cpf = cons.cidadao
 LEFT JOIN exame e ON cons.cidadao = e.cidadao 
-    AND cons.medico = e.medico 
-    AND cons.data = e.data
+    AND cons.medico = e.medico AND cons.data = e.data
 LEFT JOIN receita r ON cons.cidadao = r.cidadao 
-    AND cons.medico = r.medico 
-    AND cons.data = r.data
-WHERE c.cpf = %s
-ORDER BY cons.data DESC;
+    AND cons.medico = r.medico AND cons.data = r.data
+WHERE c.cpf = %s 
+ORDER BY cons.data DESC NULLS LAST
+\end{lstlisting}
+
+% 3. Agregação
+\subsubsection{Relatório de Consultas por Unidade}
+\textbf{Descrição:} Consulta analítica que contabiliza o total de atendimentos realizados por cada unidade de saúde em um determinado período.
+
+\noindent\textbf{Localização:}
+\begin{itemize}
+    \item \textbf{Arquivo:} \texttt{src/back/queries/consultas\_queries.py}
+    \item \textbf{Função:} \texttt{get\_consultas\_unidade\_query()}
+\end{itemize}
+
+\begin{lstlisting}[language=SQL, caption=Agregação: Total de consultas por Unidade]
+SELECT 
+    u.nome as unidade, 
+    COUNT(*) as numero_consultas
+FROM unidade_saude u
+JOIN consulta cons ON u.cnes = cons.unidade_saude
+WHERE cons.data BETWEEN %s AND %s
+GROUP BY u.cnes, u.nome
+ORDER BY numero_consultas DESC
+\end{lstlisting}
+
+% 4. Subconsulta Correlacionada (Vacinas em Atraso)
+\subsubsection{Relatório de Vacinas em Atraso}
+\textbf{Descrição:} Identifica cidadãos que deveriam ter tomado uma vacina específica (baseado na idade/data de nascimento), mas ainda não possuem o registro de vacinação correspondente. Utiliza uma subconsulta correlacionada com \texttt{NOT EXISTS}.
+
+\noindent\textbf{Localização:}
+\begin{itemize}
+    \item \textbf{Arquivo:} \texttt{src/back/queries/consultas\_queries.py}
+    \item \textbf{Função:} \texttt{get\_vacinas\_atraso\_query()}
+\end{itemize}
+
+\begin{lstlisting}[language=SQL, caption=Subconsulta: Vacinas Pendentes por Idade]
+SELECT c.cpf, c.nome, c.data_nasc
+FROM cidadao c
+WHERE c.data_nasc > %s -- Data corte para a vacina
+AND NOT EXISTS (
+    SELECT 1 FROM vacinacao v
+    WHERE v.cidadao = c.cpf AND v.vacina_cod = %s
+)
+ORDER BY c.data_nasc DESC
+\end{lstlisting}
+
+% 5. Filtro de Texto (ILIKE) e Distinct
+\subsubsection{Pacientes por Medicamento Prescrito}
+\textbf{Descrição:} Lista pacientes que receberam prescrição de um determinado medicamento. Utiliza \texttt{DISTINCT} para evitar duplicatas (caso o paciente tome o remédio recorrentemente) e \texttt{ILIKE} para busca textual flexível (case-insensitive).
+
+\noindent\textbf{Localização:}
+\begin{itemize}
+    \item \textbf{Arquivo:} \texttt{src/back/queries/consultas\_queries.py}
+    \item \textbf{Função:} \texttt{get\_pacientes\_medicamento\_query()}
+\end{itemize}
+
+\begin{lstlisting}[language=SQL, caption=Filtro Textual: Busca de Pacientes por Remédio]
+SELECT DISTINCT c.cpf, c.nome, r.medicamento, r.dosagem, r.duracao
+FROM cidadao c
+JOIN receita r ON c.cpf = r.cidadao
+WHERE r.medicamento ILIKE %s
+ORDER BY c.nome
+\end{lstlisting}
+
+\subsection{Segurança (SQL Injection)}
+Para cumprir o requisito de segurança, todas as rotas utilizam consultas parametrizadas.
+
+\noindent\textbf{Localização:}
+\begin{itemize}
+    \item \textbf{Arquivo:} \texttt{src/back/routes/cidadao.py}
+    \item \textbf{Rotina:} \texttt{buscar\_cidadao\_completo(cpf)}
+\end{itemize}
+
+\begin{lstlisting}[language=Python, caption=Exemplo de Chamada Segura com Psycopg2]
+# O uso da tupla (cpf,) garante que o driver trate o dado
+cur.execute(get_cidadao_basic_query(), (cpf,))
 \end{lstlisting}
 
 \section{Conclusão}
-O desenvolvimento do Prontuário Eletrônico do Cidadão permitiu aplicar na prática os conceitos de modelagem relacional e integração de aplicações. A maior dificuldade encontrada foi a modelagem correta da generalização/especialização dos profissionais de saúde e a implementação da divisão relacional em SQL puro.
 
-O uso do Docker facilitou o desenvolvimento em equipe, garantindo a consistência do ambiente. A implementação demonstra a viabilidade de um sistema centralizado para Cidades Inteligentes.
+O desenvolvimento do projeto Prontuário Eletrônico do Cidadão (PEC) permitiu consolidar, de forma prática, os conceitos teóricos de banco de dados abordados na disciplina. A transição da modelagem conceitual para a implementação física exigiu não apenas o domínio da linguagem SQL, mas também uma compreensão sistêmica de como garantir a integridade e a consistência dos dados em uma aplicação real.
+
+\subsection{Dificuldades Encontradas}
+A maior dificuldade técnica enfrentada pelo grupo foi a implementação da consulta envolvendo \textbf{Divisão Relacional}. A lógica para identificar cidadãos que tomaram \textit{todas} as vacinas disponíveis exigiu o uso de operadores de conjunto (\texttt{NOT EXISTS} e \texttt{EXCEPT}), o que representou um desafio significativo em comparação às consultas convencionais de junção.
+
+Além disso, a configuração inicial do ambiente de desenvolvimento (Docker) apresentou obstáculos no gerenciamento de redes e conflitos de portas, exigindo um tempo considerável de depuração para garantir a padronização entre as máquinas do grupo.
+
+\subsection{Aprendizado}
+O projeto proporcionou aprendizados valiosos, destacando-se:
+\begin{itemize}
+    \item \textbf{Segurança e Integração:} A implementação do backend em Python demonstrou a importância do uso de consultas parametrizadas (via biblioteca \texttt{psycopg2}) para prevenir vulnerabilidades de SQL Injection.
+    \item \textbf{Normalização na Prática:} A necessidade de justificar as decisões do modelo relacional reforçou a importância de tratar corretamente atributos multivalorados e relacionamentos N:N para evitar redundâncias.
+    \item \textbf{Trabalho em Equipe:} O uso de ferramentas de controle de versão foi essencial para manter a consistência do código SQL e da aplicação entre os membros.
+\end{itemize}
 
 \end{document}
