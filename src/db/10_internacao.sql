@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS INTERNACAO(
     cidadao VARCHAR(11),
     cnes VARCHAR(11),
     data_alta DATE,
-    motivo VARCHAR(100),
+    motivo VARCHAR(100) NOT NULL,
     ala_hospitalar VARCHAR(20),
     CONSTRAINT PK_INTERNACAO PRIMARY KEY (data_entrada, cidadao, cnes),
     CONSTRAINT FK_INTERNACAO_1 FOREIGN KEY (cidadao)
