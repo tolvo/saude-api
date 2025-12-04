@@ -1,9 +1,9 @@
 CREATE TABLE IF NOT EXISTS VACINA (
     cod INTEGER,
     lote INTEGER,
-    nome_popular VARCHAR(29),
+    nome_popular VARCHAR(29) NOT NULL,
     fabricante VARCHAR(30),
-    validade DATE,
+    validade DATE NOT NULL,
     CONSTRAINT PK_VACINA PRIMARY KEY (cod, lote)
 
 );
