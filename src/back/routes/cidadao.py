@@ -13,6 +13,21 @@ from queries.cidadao_queries import (
     get_cirurgias_query,
     get_internacoes_query
 )
+from datetime import date, datetime, time, timedelta
+
+from datetime import date, datetime, time, timedelta
+
+def to_json_safe(value):
+    if isinstance(value, datetime):
+        return value.isoformat()
+    elif isinstance(value, date):
+        return value.isoformat()
+    elif isinstance(value, time):
+        return value.strftime("%H:%M:%S")
+    elif isinstance(value, timedelta):
+        return str(value)
+    return value
+
 
 def register_cidadao_routes(app):
     """Registra as rotas relacionadas a cidadãos"""
@@ -84,13 +99,14 @@ def register_cidadao_routes(app):
             
             cur.execute(get_cirurgias_query(), (cpf,))
             resultado["cirurgias"] = [{
-                "procedimento": row[0],
-                "data_realizacao": str(row[1]) if row[1] else None,
-                "duracao": str(row[2]) if row[2] else None,
-                "observacoes": row[3],
-                "cuidados": row[4],
-                "hospital": row[5]
+                "nome_procedimento": row[0],
+                "data_realizacao": to_json_safe(row[1]),
+                "duracao": to_json_safe(row[2]),
+                "observacao": row[3],
+                "cuidados_posteriores": row[4],
+                "hospital_nome": row[5]
             } for row in cur.fetchall()]
+
             
             cur.execute(get_internacoes_query(), (cpf,))
             resultado["internacoes"] = [{

@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS CIRURGIA(
     duracao TIME,
     observacao VARCHAR(300),
     cuidados_posteriores VARCHAR(100),
-    nome_procedimento VARCHAR(50),
+    nome_procedimento VARCHAR(100),
     CONSTRAINT PK_CIRURGIA PRIMARY KEY (data_realizacao, cidadao, cnes),
     CONSTRAINT FK_CIRURGIA_1 FOREIGN KEY (cidadao)
                 REFERENCES CIDADAO(cpf)
